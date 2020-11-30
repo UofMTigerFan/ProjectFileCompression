@@ -8,7 +8,7 @@ This project features two forms of compression, each of which has their own stre
 3. Open your favorite editor
 4. Navigate to the files
 5. Compile with maven: mvn compile
-6. Compress with java SchubsH OR SchubsL - < <filename>
+6. Compress with java SchubsH <filename> OR java SchubsL <filename> based on preference for compression algorithm
   
 # How to test
 1. Navigate to the ProjectFileCompression directory on your computer
