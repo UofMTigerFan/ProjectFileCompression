@@ -1,6 +1,6 @@
 # ProjectFileCompression
 
-This project features two forms of compression, each of which has their own strengths. SchubsH.java uses Huffman encoding while SchubsL.java uses LZW compression. 
+This project features two forms of compression, each of which has their own strengths. SchubsH.java uses Huffman encoding while SchubsL.java uses LZW compression. Huffman encoding predicts the repeated usage of characters, assigning binary values to the characters based on how often they are used. Ones that are used more often have shorter binary values than ones that are used less often. LZW compression meanwhile is a highly commonly used compression algorithm that is commonly used with image or gif compression.
 
 # How to run
 1. Download the files
