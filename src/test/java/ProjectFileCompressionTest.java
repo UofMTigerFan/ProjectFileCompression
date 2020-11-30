@@ -73,47 +73,66 @@ public class ProjectFileCompressionTest {
 	public void DNEH() throws IOException
 	{
 		String file = "src" + File.separator + "files" + File.separator + "fileDNE.txt";
+		String fileAnswer = "src" + File.separator + "files" + File.separator + "fileDNE.txt.hh";
 		String[] args = {file};
 		SchubsH.main(args);
+		
+		assert(!fileExists(fileAnswer));
 	}
 	
 	@Test //File does not exist LZW
 	public void DNEL() throws IOException
 	{
 		String file = "src" + File.separator + "files" + File.separator + "fileDNE.txt";
+		String fileAnswer = "src" + File.separator + "files" + File.separator + "fileDNE.txt.ll";
 		String[] args = {file};
 		SchubsL.main(args);
+		
+		assert(!fileExists(fileAnswer));
 	}
 	
 	@Test
 	public void isDirH() throws IOException
 	{
 		String file = "src" + File.separator + "files";
+		String fileAnswer = "src" + File.separator + "files.hh";
 		String[] args = {file};
 		SchubsH.main(args);
+		
+		assert(!fileExists(fileAnswer));
 	}
 	
 	@Test
 	public void isDirL() throws IOException
 	{
 		String file = "src" + File.separator + "files";
+		String fileAnswer = "src" + File.separator + "files.ll";
 		String[] args = {file};
 		SchubsL.main(args);
+		
+		assert(!fileExists(fileAnswer));
+
 	}
 	
 	@Test
 	public void isEmptyH() throws IOException
 	{
 		String file = "src" + File.separator + "files" + File.separator + "empty.txt";
+		String fileAnswer = "src" + File.separator + "files" + File.separator + "empty.txt.hh";
 		String[] args = {file};
 		SchubsH.main(args);
+		
+		assert(!fileExists(fileAnswer));
 	}
 	
 	@Test
 	public void isEmptyL() throws IOException
 	{
 		String file = "src" + File.separator + "files" + File.separator + "empty.txt";
+		String fileAnswer = "src" + File.separator + "files" + File.separator + "empty.txt.ll";
 		String[] args = {file};
 		SchubsL.main(args);
+		
+		assert(!fileExists(fileAnswer));
 	}
 }
