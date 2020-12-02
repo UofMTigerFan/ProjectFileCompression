@@ -11,7 +11,6 @@
  
  import java.io.File;
  import java.io.IOException;
- import org.apache.commons.io.FilenameUtils;
 
 
 public class SchubsH {
@@ -56,8 +55,8 @@ public class SchubsH {
 	    }
     }
 
-    public static void compress() {
-        String s = BinaryStdIn.readString();
+    public static void compress(BinaryIn in, BinaryOut out) {
+        String s = in.readString();
         char[] input = s.toCharArray();
 
         int[] freq = new int[R];
@@ -69,23 +68,23 @@ public class SchubsH {
         String[] st = new String[R];
         buildCode(st, root, "");
 
-        writeTrie(root);
-	err_println("writeTrie");
+        writeTrie(root, out);
+		err_println("writeTrie");
 
-        BinaryStdOut.write(input.length);
-	err_println("writing input length " + input.length);
+        out.write(input.length);
+		err_println("writing input length " + input.length);
 
-	err_println("Encrypting your data... ");
+		err_println("Encrypting your data... ");
         for (int i = 0; i < input.length; i++) {
             String code = st[input[i]];
 	    err_print("Char " + input[i] + " ");
             for (int j = 0; j < code.length(); j++) {
                 if (code.charAt(j) == '0') {
-                    BinaryStdOut.write(false);
+                    out.write(false);
 		    err_print("0");
                 }
                 else if (code.charAt(j) == '1') {
-                    BinaryStdOut.write(true);
+                    out.write(true);
 		    err_print("1");
                 }
                 else throw new RuntimeException("Illegal state");
@@ -113,18 +112,18 @@ public class SchubsH {
         return pq.delMin();
     }
 
-    private static void writeTrie(Node x) {
+    private static void writeTrie(Node x, BinaryOut out) {
         if (x.isLeaf()) {
-            BinaryStdOut.write(true);
-            BinaryStdOut.write(x.ch);
+            out.write(true);
+            out.write(x.ch);
 	    err_println("T" + x.ch);
             return;
         }
-        BinaryStdOut.write(false);
+        out.write(false);
 	err_print("F");
 
-        writeTrie(x.left);
-        writeTrie(x.right);
+        writeTrie(x.left, out);
+        writeTrie(x.right, out);
     }
 
     private static void buildCode(String[] st, Node x, String s) {
@@ -151,20 +150,31 @@ public class SchubsH {
     }
 
     public static void main(String[] args) {
-		String filename = args[2] + ".hh";
-	try {
-		File myObj = new File(filename);
-		if (myObj.createNewFile()) {
-			System.out.println("File created: " + myObj.getName());
-		} else {
-			System.out.println("File already exists.");
+		BinaryIn in = null;
+		BinaryOut out = null;
+		File currentFile;
+		
+		for(int i = 0; i < args.length; i++)
+		{
+			try{
+			currentFile = new File(args[i]);
+			
+			if(!currentFile.exists() || !currentFile.isFile())
+				System.out.println(args[i] + " could not be compressed because is not a file.");
+			else if(currentFile.length() == 0)
+				System.out.println(args[i] + " could not be compressed because it is empty.");
+			else
+			{
+				in = new BinaryIn(args[i]);
+				out = new BinaryOut(args[i] + ".hh");
+				compress(in, out);
+			}
+			} finally
+			{
+				if(out != null)
+					out.close();
+			}
 		}
-    } catch (IOException e) {
-		System.out.println("An error occurred.");
-		e.printStackTrace();
-    }
-		if      (args[0].equals("-")) compress();
-        else throw new RuntimeException("Illegal command line argument.");
     }
 
 }

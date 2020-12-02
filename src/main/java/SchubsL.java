@@ -9,7 +9,6 @@
  
  import java.io.File;
  import java.io.IOException;
- import org.apache.commons.io.FilenameUtils;
 
 
  public class SchubsL
@@ -18,8 +17,8 @@
 	private static final int L = 4096;
 	private static final int W = 12;
 	
-	public static void compress() {
-		String input = BinaryStdIn.readString();
+	public static void compress(BinaryIn in, BinaryOut out) {
+		String input = in.readString();
 		TST<Integer> st = new TST<Integer>();
 		for (int i = 0; i < R; i++)
             st.put("" + (char) i, i);
@@ -33,25 +32,36 @@
                 st.put(input.substring(0, t + 1), code++);
             input = input.substring(t);           
         }
-        BinaryStdOut.write(R, W);
-        BinaryStdOut.close();
+        out.write(R, W);
+        out.close();
     } 
 
     public static void main(String[] args) {
-		String filename = args[2] + ".ll";
-		try {
-			File myObj = new File(filename);
-			if (myObj.createNewFile()) {
-				System.out.println("File created: " + myObj.getName());
-			} else {
-				System.out.println("File already exists.");
+		BinaryIn in = null;
+		BinaryOut out = null;
+		File currentFile;
+		
+		for(int i = 0; i < args.length; i++)
+		{
+			try{
+			currentFile = new File(args[i]);
+			
+			if(!currentFile.exists() || !currentFile.isFile())
+				System.out.println(args[i] + " could not be compressed because is not a file.");
+			else if(currentFile.length() == 0)
+				System.out.println(args[i] + " could not be compressed because it is empty.");
+			else
+			{
+				in = new BinaryIn(args[i]);
+				out = new BinaryOut(args[i] + ".ll");
+				compress(in, out);
 			}
-		} catch (IOException e) {
-		System.out.println("An error occurred.");
-		e.printStackTrace();
+			} finally
+			{
+				if(out != null)
+					out.close();
+			}
 		}
-		if      (args[0].equals("-")) compress();
-        else throw new RuntimeException("Illegal command line argument.");
     }
 
 }
